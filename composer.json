@@ -1,6 +1,6 @@
 {
     "name": "jahvi/magento2-copy-theme-override",
-    "description": "Command to automatically copy files into active theme in Magento 2",
+    "description": "Magento 2 command to automatically copy files into active theme",
     "authors": [
         {
             "name": "Javier Villanueva",
