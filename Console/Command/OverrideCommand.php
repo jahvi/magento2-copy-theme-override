@@ -113,7 +113,7 @@ class OverrideCommand extends Command
             return $moduleName;
         }
 
-        return '';
+        return false;
     }
 
     protected function getTargetFileInfo($file, $moduleName, $themeDir)

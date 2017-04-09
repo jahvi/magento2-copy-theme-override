@@ -217,6 +217,24 @@ class OverrideCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Module_Test', $moduleName);
     }
 
+    public function testGetFalseModuleFromTheme()
+    {
+        $fileName = '/var/www/magento/web/css/source/test.less';
+
+        $this->dirResolver->expects($this->once())
+            ->method('getModuleName')
+            ->with($fileName)
+            ->willReturn(null);
+
+        $moduleName = $this->callProtectedMethod(
+            $this->command,
+            'getModuleFromFile',
+            [$fileName]
+        );
+
+        $this->assertEquals(false, $moduleName);
+    }
+
     public function testGetTemplateTargetFileInfo()
     {
         $fileName   = '/var/www/magento/Module_Test/templates/test.php';
