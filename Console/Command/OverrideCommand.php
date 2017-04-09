@@ -83,7 +83,6 @@ class OverrideCommand extends Command
         );
 
         $targetFile = $this->getTargetFileInfo($originalFile, $moduleName, $themeDir);
-
         $sourceWriter      = $this->_writeFactory->create(dirname($originalFile));
         $destinationWriter = $this->_writeFactory->create($targetFile['folder']);
 
