@@ -20,13 +20,13 @@ class OverrideCommand extends Command
 {
     const FILE_ARGUMENT = 'file';
 
-    protected $_moduleDirResolver;
-    protected $_templateResolver;
-    protected $_design;
-    protected $_componentRegistrar;
-    protected $_rulePool;
-    protected $_directoryList;
-    protected $_writeFactory;
+    protected $moduleDirResolver;
+    protected $templateResolver;
+    protected $design;
+    protected $componentRegistrar;
+    protected $rulePool;
+    protected $directoryList;
+    protected $writeFactory;
 
     public function __construct(
         ReverseResolver $dirResolver,
@@ -37,15 +37,15 @@ class OverrideCommand extends Command
         RulePool $rulePool,
         DirectoryList $directoryList,
         WriteFactory $writeFactory
-    )
-    {
-        $this->_moduleDirResolver = $dirResolver;
-        $this->_templateResolver = $templateResolver;
-        $this->_design = $design;
-        $this->_componentRegistrar = $componentRegistrar;
-        $this->_rulePool = $rulePool;
-        $this->_directoryList = $directoryList;
-        $this->_writeFactory = $writeFactory;
+    ) {
+
+        $this->moduleDirResolver = $dirResolver;
+        $this->templateResolver = $templateResolver;
+        $this->design = $design;
+        $this->componentRegistrar = $componentRegistrar;
+        $this->rulePool = $rulePool;
+        $this->directoryList = $directoryList;
+        $this->writeFactory = $writeFactory;
 
         $state->setAreaCode('frontend');
 
@@ -74,17 +74,17 @@ class OverrideCommand extends Command
 
         $moduleName = $this->getModuleFromFile($originalFile);
 
-        $this->_design->setDefaultDesignTheme();
-        $theme = $this->_design->getDesignTheme();
+        $this->design->setDefaultDesignTheme();
+        $theme = $this->design->getDesignTheme();
 
-        $themeDir = $this->_componentRegistrar->getPath(
+        $themeDir = $this->componentRegistrar->getPath(
             ComponentRegistrar::THEME,
             $theme->getFullPath()
         );
 
         $targetFile = $this->getTargetFileInfo($originalFile, $moduleName, $themeDir);
-        $sourceWriter      = $this->_writeFactory->create(dirname($originalFile));
-        $destinationWriter = $this->_writeFactory->create($targetFile['folder']);
+        $sourceWriter      = $this->writeFactory->create(dirname($originalFile));
+        $destinationWriter = $this->writeFactory->create($targetFile['folder']);
 
         $sourceWriter->copyFile(basename($originalFile), $targetFile['name'], $destinationWriter);
 
@@ -93,7 +93,7 @@ class OverrideCommand extends Command
 
     protected function normalizeFileName($filePath)
     {
-        $rootDir = $this->_directoryList->getRoot();
+        $rootDir = $this->directoryList->getRoot();
 
         $appName   = basename($rootDir);
         $parentDir = dirname($rootDir);
@@ -104,7 +104,7 @@ class OverrideCommand extends Command
 
     protected function getModuleFromFile($file)
     {
-        if ($moduleName = $this->_moduleDirResolver->getModuleName($file)) {
+        if ($moduleName = $this->moduleDirResolver->getModuleName($file)) {
             return $moduleName;
         }
 

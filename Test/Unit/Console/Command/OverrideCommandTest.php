@@ -277,7 +277,8 @@ class OverrideCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedFileInfo, $fileInfo);
     }
 
-    private function callProtectedMethod($object, $method, array $args = []) {
+    private function callProtectedMethod($object, $method, array $args = [])
+    {
         $class = new \ReflectionClass(get_class($object));
         $method = $class->getMethod($method);
         $method->setAccessible(true);
