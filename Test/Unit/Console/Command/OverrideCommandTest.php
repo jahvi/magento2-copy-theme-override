@@ -109,6 +109,7 @@ class OverrideCommandTest extends \PHPUnit_Framework_TestCase
 
         $theme = $this->getMockBuilder('Magento\Theme\Model\Theme')
             ->disableOriginalConstructor()
+            ->setMethods(['getFullPath'])
             ->getMock();
 
         $writeSrc = $this->getMockBuilder('Magento\Framework\Filesystem\File\Write')
