@@ -14,6 +14,8 @@ use Magento\Framework\Component\ComponentRegistrarInterface;
 
 class OverrideCommandTest extends \PHPUnit_Framework_TestCase
 {
+    use \phpmock\phpunit\PHPMock;
+
     /**
      * @var ReverseResolver | \PHPUnit_Framework_MockObject_MockObject
      */
@@ -103,7 +105,7 @@ class OverrideCommandTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testExecute()
+    public function testExecuteIfTargetFileDoesNotExist()
     {
         $fileName = '/path/to/local/magento/Module_Test/templates/test.php';
 
@@ -157,11 +159,80 @@ class OverrideCommandTest extends \PHPUnit_Framework_TestCase
             )
             ->willReturn(true);
 
+        $fileExists = $this->getFunctionMock(
+            'Jahvi\\CopyThemeOverride\\Console\\Command',
+            'file_exists'
+        );
+        $fileExists->expects($this->once())->willReturn(false);
+
         $commandTester = new CommandTester($this->command);
         $commandTester->execute([OverrideCommand::FILE_ARGUMENT => $fileName]);
 
         $this->assertContains(
             'File copied to: /path/to/local/magento/frontend/Foo/bar/Module_Test/templates/test.php',
+            $commandTester->getDisplay()
+        );
+    }
+
+    public function testExecuteIfTargetFileExists()
+    {
+        $fileName = '/path/to/local/magento/Module_Test/templates/test.php';
+
+        $theme = $this->getMockBuilder('Magento\Theme\Model\Theme')
+            ->disableOriginalConstructor()
+            ->setMethods(['getFullPath'])
+            ->getMock();
+
+        $writeSrc = $this->getMockBuilder('Magento\Framework\Filesystem\File\Write')
+            ->disableOriginalConstructor()
+            ->setMethods(['copyFile'])
+            ->getMock();
+
+        $writeDest = $this->getMockBuilder('Magento\Framework\Filesystem\File\Write')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->directoryList->expects($this->once())
+            ->method('getRoot')
+            ->willReturn('/var/www/magento');
+
+        $this->design->expects($this->once())
+            ->method('getDesignTheme')
+            ->willReturn($theme);
+
+        $theme->expects($this->any())
+            ->method('getFullPath')
+            ->willReturn('frontend/Foo/bar');
+
+        $this->componentRegistrar->expects($this->once())
+            ->method('getPath')
+            ->with('theme', 'frontend/Foo/bar')
+            ->willReturn('/path/to/local/magento/frontend/Foo/bar');
+
+        $this->writeFactory->expects($this->at(0))
+            ->method('create')
+            ->with('/var/www/magento/Module_Test/templates')
+            ->willReturn($writeSrc);
+
+        $this->writeFactory->expects($this->at(1))
+            ->method('create')
+            ->with('/path/to/local/magento/frontend/Foo/bar/Module_Test/templates')
+            ->willReturn($writeDest);
+
+        $writeSrc->expects($this->never())
+            ->method('copyFile');
+
+        $fileExists = $this->getFunctionMock(
+            'Jahvi\\CopyThemeOverride\\Console\\Command',
+            'file_exists'
+        );
+        $fileExists->expects($this->once())->willReturn(true);
+
+        $commandTester = new CommandTester($this->command);
+        $commandTester->execute([OverrideCommand::FILE_ARGUMENT => $fileName]);
+
+        $this->assertContains(
+            'File already exists in: /path/to/local/magento/frontend/Foo/bar/Module_Test/templates/test.php',
             $commandTester->getDisplay()
         );
     }

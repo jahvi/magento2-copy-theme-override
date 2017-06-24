@@ -82,13 +82,17 @@ class OverrideCommand extends Command
             $theme->getFullPath()
         );
 
-        $targetFile = $this->getTargetFileInfo($originalFile, $moduleName, $themeDir);
+        $targetFile        = $this->getTargetFileInfo($originalFile, $moduleName, $themeDir);
         $sourceWriter      = $this->writeFactory->create(dirname($originalFile));
         $destinationWriter = $this->writeFactory->create($targetFile['folder']);
+        $targetFilePath    = "{$targetFile['folder']}/{$targetFile['name']}";
+
+        if (file_exists($targetFilePath)) {
+            return $output->writeln("<error>File already exists in: $targetFilePath</error>");
+        }
 
         $sourceWriter->copyFile(basename($originalFile), $targetFile['name'], $destinationWriter);
-
-        $output->writeln("<info>File copied to: {$targetFile['folder']}/{$targetFile['name']}</info>");
+        return $output->writeln("<info>File copied to: $targetFilePath</info>");
     }
 
     protected function normalizeFileName($filePath)
