@@ -5,7 +5,9 @@ php:
 install:
     - echo "{\"http-basic\":{\"repo.magento.com\":{\"username\":\"${MAGENTO_USERNAME}\",\"password\":\"${MAGENTO_PASSWORD}\"}}}" > auth.json
     - composer install --prefer-dist
-script: php vendor/bin/phpunit ./Test/Unit
+script: php vendor/bin/phpunit --coverage-clover build/logs/clover.xml --whitelist ./Console ./Test/Unit
+after_success:
+  - travis_retry php vendor/bin/coveralls
 env:
   global:
   - secure: UGSiggzH/aaaq2eMWqrOueIhMdGZVE08lbIS0tTnRE/B91P8VSUQS6scGJI9UfBT2kcEtWyWWM4tCz692cBo5JhLj1RZTvUdVMiwldH0eNrPSDvcSUlyyCDnVmVz6rA/VqQ8na7WucLOHVoRUWEVEqtNIKsQV8t0x8NbrDjP4c2IHspYRstXQGiLytSVlZWH9afQAeHpelgGzDgFLjHOKeCxBG1mhuS3MzcpezMbdfctR4p1RhgqcAcsJxYNBt5atCsA01RHMd9dMWF8KfL2t6P1az3hY6n8I0t0ec3u/gIHRt7ez0Yu4YzIAsVVJjBgTu+mDsYYmclDnOcPEK5lm7Z281t3iGXssS20jrizWRE6oiqGZgW35pTbyVUCTAWYb2OsHiqk9eCB+LS06sX3rcZLW2k1QOb3jtbxLixkng7G6KeUISqONnyIB3HTnBFnCpxTqr3nD5uwas6O66sqeaWVDNy6hgHrOyLzDsxjgdq5L6L5KRU+qRTptNRp4Rw9RVS/G9KVAZr32saRKzpDtFl4+yJPk8gpBrAHq29qQbw8NJQ9GoAVQ0GIdnCTCPvYjOhOEM//K6ljM/5UwePl1mGiMK3fDRVU+/zVZXkrXRFjHr7fg7rLxhI+5E2ezMn56ZcbU8GVuww3cN5zxF3gDCfrBvAc2/isJYITOKgCmaE=
