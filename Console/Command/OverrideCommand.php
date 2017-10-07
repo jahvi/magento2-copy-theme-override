@@ -45,6 +45,7 @@ class OverrideCommand extends Command
         $this->rulePool = $rulePool;
         $this->directoryList = $directoryList;
         $this->writeFactory = $writeFactory;
+        $this->state = $state;
 
         parent::__construct();
     }
@@ -66,7 +67,7 @@ class OverrideCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $state->setAreaCode('frontend');
+        $this->state->setAreaCode(\Magento\Framework\App\Area::AREA_FRONTEND);
 
         $originalFile = $input->getArgument(self::FILE_ARGUMENT);
         $originalFile = $this->normalizeFileName($originalFile);
