@@ -38,7 +38,6 @@ class OverrideCommand extends Command
         DirectoryList $directoryList,
         WriteFactory $writeFactory
     ) {
-
         $this->moduleDirResolver = $dirResolver;
         $this->templateResolver = $templateResolver;
         $this->design = $design;
@@ -46,8 +45,6 @@ class OverrideCommand extends Command
         $this->rulePool = $rulePool;
         $this->directoryList = $directoryList;
         $this->writeFactory = $writeFactory;
-
-        $state->setAreaCode('frontend');
 
         parent::__construct();
     }
@@ -69,6 +66,8 @@ class OverrideCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $state->setAreaCode('frontend');
+
         $originalFile = $input->getArgument(self::FILE_ARGUMENT);
         $originalFile = $this->normalizeFileName($originalFile);
 
