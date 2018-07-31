@@ -4,6 +4,8 @@
 
 🎩 Magento 2 command to automatically copy files into active theme.
 
+![screen2](https://user-images.githubusercontent.com/661330/43463240-008b4706-94d0-11e8-8abe-9516c963ec13.gif)
+
 ## Installation
 
 1. Install via composer `composer require jahvi/magento2-copy-theme-override --dev`
