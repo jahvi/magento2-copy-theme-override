@@ -58,3 +58,18 @@ By itself the command is not very useful but most IDEs or code editors provide a
 
 2. Open the file to override.
 3. Run build task shortcut, by default `Shift + Cmd + B` or `Ctrl + Shift + B` on Windows/Linux.
+
+### Sublime Text
+
+1. Create new build system `Tools > Build System > New Build System...` with the following content:
+
+```json
+{
+    "shell_cmd": "php bin/magento dev:copy-theme-override $file",
+    "working_dir": "$folder"
+}
+```
+
+2. Open the file to override.
+3. Run Build task, by default `Cmd + B` or `Ctrl + B` on Windows/Linux.
+
