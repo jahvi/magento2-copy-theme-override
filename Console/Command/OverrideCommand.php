@@ -127,6 +127,11 @@ class OverrideCommand extends Command
         if (strpos($file, '/templates/') !== false) {
             $data['name']   = explode('/templates/', $file)[1];
             $data['folder'] = "$themeDir/$moduleName/templates";
+        } elseif (strpos($file, '/styles/') !== false) {
+            $targetDirName = $moduleName ? "$moduleName/styles" : 'styles';
+
+            $data['name']   = explode('/styles/', $file)[1];
+            $data['folder'] = "$themeDir/$targetDirName";
         } elseif (strpos($file, '/web/') !== false) {
             $targetDirName = $moduleName ? "$moduleName/web" : 'web';
 

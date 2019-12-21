@@ -346,6 +346,26 @@ class OverrideCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedFileInfo, $fileInfo);
     }
 
+    public function testGetThemeStylesTargetFileInfo()
+    {
+        $fileName   = '/var/www/magento/Module_Test/view/frontend/styles/test.scss';
+        $themeDir   = '/var/www/magento/app/design/frontend/Foo/bar';
+        $moduleName = 'Module_Test';
+
+        $fileInfo = $this->callProtectedMethod(
+            $this->command,
+            'getTargetFileInfo',
+            [$fileName, $moduleName, $themeDir]
+        );
+
+        $expectedFileInfo = [
+            'name'   => 'test.scss',
+            'folder' => '/var/www/magento/app/design/frontend/Foo/bar/Module_Test/styles',
+        ];
+
+        $this->assertEquals($expectedFileInfo, $fileInfo);
+    }
+
     public function testGetThemeWebTargetFileInfo()
     {
         $fileName   = '/var/www/magento/theme-frontend-test/web/css/source/test.less';
@@ -361,6 +381,26 @@ class OverrideCommandTest extends \PHPUnit_Framework_TestCase
         $expectedFileInfo = [
             'name'   => 'css/source/test.less',
             'folder' => '/var/www/magento/app/design/frontend/Foo/bar/web',
+        ];
+
+        $this->assertEquals($expectedFileInfo, $fileInfo);
+    }
+
+    public function testGetThemeWebStylesTargetFileInfo()
+    {
+        $fileName   = '/var/www/magento/theme-frontend-test/web/styles/test.scss';
+        $themeDir   = '/var/www/magento/app/design/frontend/Foo/bar';
+        $moduleName = false;
+
+        $fileInfo = $this->callProtectedMethod(
+            $this->command,
+            'getTargetFileInfo',
+            [$fileName, $moduleName, $themeDir]
+        );
+
+        $expectedFileInfo = [
+            'name'   => 'test.scss',
+            'folder' => '/var/www/magento/app/design/frontend/Foo/bar/styles',
         ];
 
         $this->assertEquals($expectedFileInfo, $fileInfo);
