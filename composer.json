@@ -19,8 +19,8 @@
         "symfony/console": "^4.1"
     },
     "require-dev": {
-        "php-mock/php-mock-phpunit": "^1.1",
-        "phpunit/phpunit": "^5.7",
+        "php-mock/php-mock-phpunit": "^2",
+        "phpunit/phpunit": "^8",
         "satooshi/php-coveralls": "^1.0"
     },
     "type": "magento2-module",

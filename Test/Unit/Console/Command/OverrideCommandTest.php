@@ -1,58 +1,60 @@
 <?php
 namespace Jahvi\CopyThemeOverride\Test\Unit\Console\Command;
 
+use PHPUnit\Framework\TestCase;
 use Magento\Framework\App\State;
 use Magento\Framework\View\DesignInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use Magento\Framework\Module\Dir\ReverseResolver;
-use Symfony\Component\Console\Tester\CommandTester;
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Symfony\Component\Console\Tester\CommandTester;
 use Magento\Framework\View\Design\Fallback\RulePool;
 use Magento\Framework\Filesystem\Directory\WriteFactory;
 use Magento\Framework\View\Element\Template\File\Resolver;
 use Jahvi\CopyThemeOverride\Console\Command\OverrideCommand;
 use Magento\Framework\Component\ComponentRegistrarInterface;
 
-class OverrideCommandTest extends \PHPUnit_Framework_TestCase
+class OverrideCommandTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
 
     /**
-     * @var ReverseResolver | \PHPUnit_Framework_MockObject_MockObject
+     * @var ReverseResolver|MockObject
      */
     protected $dirResolver;
 
     /**
-     * @var Resolver | \PHPUnit_Framework_MockObject_MockObject
+     * @var Resolver|MockObject
      */
     protected $templateResolver;
 
     /**
-     * @var State | \PHPUnit_Framework_MockObject_MockObject
+     * @var State|MockObject
      */
     protected $appState;
 
     /**
-     * @var DesignInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var DesignInterface|MockObject
      */
     protected $design;
 
     /**
-     * @var ComponentRegistrarInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ComponentRegistrarInterface|MockObject
      */
     protected $componentRegistrar;
 
     /**
-     * @var RulePool | \PHPUnit_Framework_MockObject_MockObject
+     * @var RulePool|MockObject
      */
     protected $rulePool;
 
     /**
-     * @var DirectoryList | \PHPUnit_Framework_MockObject_MockObject
+     * @var DirectoryList|MockObject
      */
     protected $directoryList;
 
     /**
-     * @var WriteFactory | \PHPUnit_Framework_MockObject_MockObject
+     * @var WriteFactory|MockObject
      */
     protected $writeFactory;
 
@@ -61,7 +63,7 @@ class OverrideCommandTest extends \PHPUnit_Framework_TestCase
      */
     protected $command;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dirResolver = $this->getMockBuilder('Magento\Framework\Module\Dir\ReverseResolver')
             ->disableOriginalConstructor()
@@ -168,7 +170,7 @@ class OverrideCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($this->command);
         $commandTester->execute([OverrideCommand::FILE_ARGUMENT => $fileName]);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'File copied to: /path/to/local/magento/frontend/Foo/bar/Module_Test/templates/test.php',
             $commandTester->getDisplay()
         );
@@ -231,7 +233,7 @@ class OverrideCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($this->command);
         $commandTester->execute([OverrideCommand::FILE_ARGUMENT => $fileName]);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'File already exists in: /path/to/local/magento/frontend/Foo/bar/Module_Test/templates/test.php',
             $commandTester->getDisplay()
         );
