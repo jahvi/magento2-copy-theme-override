@@ -14,8 +14,8 @@
         }
     ],
     "require": {
-        "php": "~7.1.3||~7.2.0||~7.3.0",
-        "magento/framework": "102.0.*",
+        "php": "^7.3",
+        "magento/framework": "^102|^103",
         "symfony/console": "^4.1"
     },
     "require-dev": {
